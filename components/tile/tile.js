@@ -20,6 +20,7 @@ Component({
     number: 0,
     cnNumber: '',
     charLabel: '',
+    jianColorClass: '',
     dots: []
   },
   observers: {
@@ -47,6 +48,10 @@ Component({
         charLabel = '财'
       }
 
+      // 箭牌颜色类名（WXSS不支持中文类名）
+      const jianColorClasses = { '中': 'jian-zhong', '发': 'jian-fa' }
+      const jianColorClass = jianColorClasses[charLabel] || ''
+
       this.setData({
         label: tileToString(id),
         suitClass: isJoker(id) ? 'joker' : suitClasses[suit],
@@ -54,6 +59,7 @@ Component({
         number: number,
         cnNumber: cnNumber,
         charLabel: charLabel,
+        jianColorClass: jianColorClass,
         dots: dots
       })
     }

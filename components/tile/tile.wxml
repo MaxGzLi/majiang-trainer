@@ -31,7 +31,7 @@
 
   <!-- 箭牌 (Dragons) -->
   <block wx:elif="{{suitType === 'jian'}}">
-    <text class="jian-char jian-{{charLabel}}">{{charLabel}}</text>
+    <text class="jian-char {{jianColorClass}}">{{charLabel}}</text>
   </block>
 
   <!-- 财神 (Joker) -->

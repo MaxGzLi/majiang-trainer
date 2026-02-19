@@ -105,10 +105,10 @@
   font-size: 42rpx;
   font-weight: 900;
 }
-.jian-中 {
+.jian-zhong {
   color: #c62828;
 }
-.jian-发 {
+.jian-fa {
   color: #2e7d32;
 }
 .tile-small .jian-char {
