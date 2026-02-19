@@ -69,11 +69,27 @@ Page({
     const stats = getStats()
     recordResult(stats, this.data.difficulty, isCorrect)
 
-    // 格式化为人话
-    const displayAnalysis = analysis.slice(0, 5).map(a => formatAnalysisItem(a))
-    const bestItem = displayAnalysis[0]
+    // 格式化为人话，只显示有差异的选项
+    const allFormatted = analysis.map(a => formatAnalysisItem(a))
+    const bestItem = allFormatted[0]
 
-    // 计算进张条的最大值用于百分比
+    // 过滤：只保留跟最优有差异的 + 最优本身 + 用户选择（最多5个）
+    let displayAnalysis = [allFormatted[0]] // 最优一定显示
+    for (let i = 1; i < allFormatted.length; i++) {
+      const a = allFormatted[i]
+      // 只显示有明显差异的选项（向听不同 或 进张差>=2）
+      const isDiff = a.shanten !== bestItem.shanten ||
+                     Math.abs(a.totalAcceptCount - bestItem.totalAcceptCount) >= 2
+      const isUserChoice = a.tile === userTile
+      if (isDiff || isUserChoice) displayAnalysis.push(a)
+      if (displayAnalysis.length >= 5) break
+    }
+    // 如果过滤后只剩1个，至少显示第二名
+    if (displayAnalysis.length === 1 && allFormatted.length > 1) {
+      displayAnalysis.push(allFormatted[1])
+    }
+
+    // 计算进度条宽度
     const maxAccept = Math.max(...displayAnalysis.map(a => a.totalAcceptCount), 1)
     displayAnalysis.forEach(a => {
       a.barWidth = Math.round(a.totalAcceptCount / maxAccept * 100)
