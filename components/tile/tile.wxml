@@ -1,45 +1,66 @@
 <view class="tile {{suitClass}} {{selected ? 'selected' : ''}} {{disabled ? 'disabled' : ''}} {{showBest ? 'best' : ''}} {{small ? 'tile-small' : ''}}"
       bindtap="onTap">
 
-  <!-- 万子 (Characters) - Blue -->
+  <!-- 万字牌：黑色中文数字 + 红色萬 -->
   <block wx:if="{{suitType === 'wan'}}">
     <text class="wan-num">{{cnNumber}}</text>
-    <text class="wan-char">万</text>
+    <text class="wan-char">萬</text>
   </block>
 
-  <!-- 筒子 (Dots) - Blue circles -->
+  <!-- 筒子牌 -->
   <block wx:elif="{{suitType === 'tong'}}">
-    <view class="dots-grid">
-      <view wx:for="{{dots}}" wx:key="index" class="dot-row">
+    <!-- 1筒：大圆环 -->
+    <view wx:if="{{isOneTong}}" class="one-tong">
+      <view class="one-tong-outer">
+        <view class="one-tong-mid">
+          <view class="one-tong-inner"></view>
+        </view>
+      </view>
+    </view>
+    <!-- 2-9筒：圆点排列 -->
+    <view wx:else class="dots-grid">
+      <view class="dot-row" wx:for="{{dots}}" wx:key="index">
         <view class="dot"></view>
-        <view wx:if="{{item.dots >= 2}}" class="dot"></view>
-        <view wx:if="{{item.dots >= 3}}" class="dot"></view>
+        <view class="dot" wx:if="{{item.dots >= 2}}"></view>
+        <view class="dot" wx:if="{{item.dots >= 3}}"></view>
       </view>
     </view>
   </block>
 
-  <!-- 条子 (Bamboo) - Green -->
+  <!-- 条子牌 -->
   <block wx:elif="{{suitType === 'tiao'}}">
-    <text class="tiao-num">{{number}}</text>
-    <text class="tiao-char">条</text>
+    <!-- 1条：鸟/特殊设计 -->
+    <view wx:if="{{isOneTiao}}" class="one-tiao">
+      <view class="bird-head"></view>
+      <view class="bird-body"></view>
+      <view class="bird-tail"></view>
+    </view>
+    <!-- 2-9条：竹节排列 -->
+    <view wx:else class="bars-grid">
+      <view class="bar-row" wx:for="{{bars}}" wx:key="index">
+        <view class="bar"></view>
+        <view class="bar" wx:if="{{item.bars >= 2}}"></view>
+        <view class="bar" wx:if="{{item.bars >= 3}}"></view>
+      </view>
+    </view>
   </block>
 
-  <!-- 风牌 (Winds) -->
+  <!-- 风牌 -->
   <block wx:elif="{{suitType === 'feng'}}">
     <text class="feng-char">{{charLabel}}</text>
   </block>
 
-  <!-- 箭牌 (Dragons) -->
+  <!-- 箭牌 -->
   <block wx:elif="{{suitType === 'jian'}}">
     <text class="jian-char {{jianColorClass}}">{{charLabel}}</text>
   </block>
 
-  <!-- 财神 (Joker) -->
+  <!-- 财神 -->
   <block wx:elif="{{suitType === 'joker'}}">
     <text class="joker-char">{{charLabel}}</text>
     <text class="joker-sub">神</text>
   </block>
 
-  <!-- Danger dot indicator -->
+  <!-- 危险度标记 -->
   <view wx:if="{{dangerLevel >= 0}}" class="danger-dot danger-{{dangerLevel}}"></view>
 </view>

@@ -21,36 +21,50 @@ Component({
     cnNumber: '',
     charLabel: '',
     jianColorClass: '',
-    dots: []
+    dots: [],
+    bars: [],
+    isOneTiao: false,
+    isOneTong: false
   },
   observers: {
     'tileId': function(id) {
       if (id < 0) return
       const suit = getSuit(id)
       const suitClasses = ['wan', 'tong', 'tiao', 'feng', 'jian']
-      const suitTypes = ['wan', 'tong', 'tiao', 'feng', 'jian']
 
-      let suitType = isJoker(id) ? 'joker' : suitTypes[suit]
+      let suitType = isJoker(id) ? 'joker' : suitClasses[suit]
       let number = getNumber(id)
       let cnNumber = ''
       let charLabel = ''
       let dots = []
+      let bars = []
+      let isOneTiao = false
+      let isOneTong = false
+      let jianColorClass = ''
 
       if (suitType === 'wan') {
         cnNumber = CN_NUMBERS[number]
       } else if (suitType === 'tong') {
-        dots = this._getDotPositions(number)
+        if (number === 1) {
+          isOneTong = true
+        } else {
+          dots = this._getDotPositions(number)
+        }
+      } else if (suitType === 'tiao') {
+        if (number === 1) {
+          isOneTiao = true
+        } else {
+          bars = this._getBarPositions(number)
+        }
       } else if (suitType === 'feng') {
         charLabel = FENG_CHARS[id - 27]
       } else if (suitType === 'jian') {
         charLabel = JIAN_CHARS[id - 31]
+        const jianColorClasses = { '中': 'jian-zhong', '发': 'jian-fa' }
+        jianColorClass = jianColorClasses[charLabel] || ''
       } else if (suitType === 'joker') {
         charLabel = '财'
       }
-
-      // 箭牌颜色类名（WXSS不支持中文类名）
-      const jianColorClasses = { '中': 'jian-zhong', '发': 'jian-fa' }
-      const jianColorClass = jianColorClasses[charLabel] || ''
 
       this.setData({
         label: tileToString(id),
@@ -60,7 +74,10 @@ Component({
         cnNumber: cnNumber,
         charLabel: charLabel,
         jianColorClass: jianColorClass,
-        dots: dots
+        dots: dots,
+        bars: bars,
+        isOneTiao: isOneTiao,
+        isOneTong: isOneTong
       })
     }
   },
@@ -71,8 +88,8 @@ Component({
       }
     },
     _getDotPositions(num) {
+      // 每行几个圆点
       const layouts = {
-        1: [{ dots: 1 }],
         2: [{ dots: 1 }, { dots: 1 }],
         3: [{ dots: 1 }, { dots: 1 }, { dots: 1 }],
         4: [{ dots: 2 }, { dots: 2 }],
@@ -81,6 +98,20 @@ Component({
         7: [{ dots: 2 }, { dots: 2 }, { dots: 2 }, { dots: 1 }],
         8: [{ dots: 2 }, { dots: 2 }, { dots: 2 }, { dots: 2 }],
         9: [{ dots: 3 }, { dots: 3 }, { dots: 3 }]
+      }
+      return layouts[num] || []
+    },
+    _getBarPositions(num) {
+      // 每行几根竹节
+      const layouts = {
+        2: [{ bars: 2 }],
+        3: [{ bars: 3 }],
+        4: [{ bars: 2 }, { bars: 2 }],
+        5: [{ bars: 2 }, { bars: 1 }, { bars: 2 }],
+        6: [{ bars: 3 }, { bars: 3 }],
+        7: [{ bars: 3 }, { bars: 1 }, { bars: 3 }],
+        8: [{ bars: 2 }, { bars: 2 }, { bars: 2 }, { bars: 2 }],
+        9: [{ bars: 3 }, { bars: 3 }, { bars: 3 }]
       }
       return layouts[num] || []
     }
