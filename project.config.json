@@ -1,0 +1,9 @@
+{
+  "miniprogramRoot": "./",
+  "setting": {
+    "es6": true,
+    "enhance": true
+  },
+  "appid": "",
+  "projectname": "majiang-trainer"
+}
