@@ -1,7 +1,7 @@
 const { dealHand, DIFFICULTY } = require('../dealer')
 const { analyzeAllDiscards, calcRemainCount } = require('../efficiency')
 const { tilesToHandArray, tileToString } = require('../tiles')
-const { generateExplanation } = require('../analyzer')
+const { generateExplanation, formatAnalysisItem } = require('../analyzer')
 
 function assert(cond, msg) {
   if (!cond) throw new Error('FAIL: ' + msg)
@@ -25,22 +25,31 @@ function runE2E() {
     assert(analysis.length >= 1, `${diff} 有分析结果`)
 
     const best = analysis[0]
-    console.log(`最优: 打${tileToString(best.tile)}, 向听${best.shanten}, 进张${best.totalAcceptCount}张`)
+
+    // 测试人话格式化
+    const formatted = formatAnalysisItem(best)
+    console.log(`最优: 打${formatted.tileStr}, ${formatted.shantenText}, ${formatted.acceptText}`)
+    assert(formatted.shantenText.length > 0, '有向听文字')
+    assert(formatted.acceptText.includes('能接'), '进张文字包含"能接"')
 
     if (analysis.length >= 2) {
       const userChoice = analysis[1].tile
-      const explanation = generateExplanation(userChoice, best.tile, analysis)
-      console.log(`模拟选次优(${tileToString(userChoice)}): ${explanation}`)
+      const explanation = generateExplanation(userChoice, best.tile, analysis, handArr)
+      console.log(`模拟选次优(${tileToString(userChoice)}):\n${explanation}`)
+      assert(explanation.length > 0, '有解析文字')
     }
 
-    // 验证正确选择的解析
-    const correctExplanation = generateExplanation(best.tile, best.tile, analysis)
-    assert(correctExplanation.includes('正确'), `${diff} 正确解析包含"正确"`)
+    // 验证正确选择的解析（传入hand参数）
+    const correctExplanation = generateExplanation(best.tile, best.tile, analysis, handArr)
+    assert(correctExplanation.includes('选对了'), `${diff} 正确解析包含"选对了"`)
+    // 即使选对了也要有解释，不能只是一句话
+    assert(correctExplanation.length > 10, `${diff} 正确解析有详细说明`)
 
+    console.log(`选对解析: ${correctExplanation}`)
     console.log()
   }
 
-  // 多次发牌稳定性测试
+  // 稳定性测试
   console.log('--- 稳定性测试: 连续发20局 ---')
   let successCount = 0
   for (let i = 0; i < 20; i++) {

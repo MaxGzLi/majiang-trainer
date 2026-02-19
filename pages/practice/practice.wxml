@@ -16,34 +16,53 @@
   </view>
 
   <block wx:if="{{confirmed}}">
+    <!-- 结果提示 -->
     <view class="result {{isCorrect ? 'correct' : 'wrong'}}">
-      <text class="result-text">{{isCorrect ? '正确！' : '可以更优'}}</text>
+      <text class="result-text">{{isCorrect ? '选对了！' : '有更好的选择'}}</text>
     </view>
 
+    <!-- 选择对比（仅选错时显示） -->
     <view class="comparison" wx:if="{{!isCorrect}}">
-      <view class="comp-row">
-        <text class="comp-label">你的选择：</text>
-        <text>打 {{userTileStr}}</text>
+      <view class="comp-row user-row">
+        <text class="comp-icon">✗</text>
+        <text>你打了 {{userTileStr}}</text>
       </view>
-      <view class="comp-row">
-        <text class="comp-label">最优选择：</text>
-        <text class="best-text">打 {{bestTileStr}}</text>
+      <view class="comp-row best-row">
+        <text class="comp-icon">✓</text>
+        <text>更好的选择是打 {{bestTileStr}}</text>
       </view>
     </view>
 
+    <!-- 人话解析（最重要的部分） -->
+    <view class="explanation">
+      <view class="exp-header">
+        <text class="exp-label">为什么？</text>
+      </view>
+      <text class="exp-text">{{explanation}}</text>
+    </view>
+
+    <!-- 当前局面概况 -->
+    <view class="situation">
+      <text class="sit-text">打{{bestTileStr}}之后：{{bestShantenText}}，{{bestAcceptText}}</text>
+    </view>
+
+    <!-- 各选择对比（用进度条展示，更直观） -->
     <view class="analysis-list">
-      <view class="analysis-title">牌效对比</view>
+      <view class="analysis-header">
+        <text class="analysis-title">各选择对比</text>
+        <text class="analysis-hint">条越长 = 摸到有用牌的机会越大</text>
+      </view>
       <view class="analysis-item {{item.tile === bestTile ? 'best-item' : ''}} {{item.tile === userTile && !isCorrect ? 'user-item' : ''}}"
             wx:for="{{analysis}}" wx:key="tile">
-        <text class="a-tile">打{{item.tileStr}}</text>
-        <text class="a-shanten">向听{{item.shanten}}</text>
-        <text class="a-count">进张{{item.totalAcceptCount}}张</text>
+        <view class="a-left">
+          <text class="a-tile">打{{item.tileStr}}</text>
+          <text class="a-steps">{{item.shantenText}}</text>
+        </view>
+        <view class="a-bar-wrap">
+          <view class="a-bar" style="width: {{item.barWidth}}%"></view>
+        </view>
+        <text class="a-count">{{item.totalAcceptCount}}张</text>
       </view>
-    </view>
-
-    <view class="explanation" wx:if="{{explanation}}">
-      <text class="exp-label">解析</text>
-      <text class="exp-text">{{explanation}}</text>
     </view>
 
     <view class="actions">

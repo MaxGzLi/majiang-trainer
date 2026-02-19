@@ -1,7 +1,6 @@
 const { dealHand } = require('../../core/dealer')
-const { analyzeAllDiscards, calcRemainCount } = require('../../core/efficiency')
 const { tilesToHandArray, tileToString } = require('../../core/tiles')
-const { generateExplanation } = require('../../core/analyzer')
+const { generateExplanation, formatAnalysisItem, shantenToText } = require('../../core/analyzer')
 const { getStats, recordResult } = require('../../utils/storage')
 
 Page({
@@ -18,7 +17,9 @@ Page({
     questionNum: 1,
     diffLabel: '入门',
     userTileStr: '',
-    bestTileStr: ''
+    bestTileStr: '',
+    bestShantenText: '',
+    bestAcceptText: ''
   },
   onLoad(options) {
     const difficulty = options.difficulty || 'easy'
@@ -33,6 +34,7 @@ Page({
       return
     }
     this._preAnalysis = result.analysis
+    this._handArr = tilesToHandArray(result.tiles)
     this.setData({
       tiles: result.tiles,
       selectedTile: -1,
@@ -43,7 +45,9 @@ Page({
       isCorrect: false,
       explanation: '',
       userTileStr: '',
-      bestTileStr: ''
+      bestTileStr: '',
+      bestShantenText: '',
+      bestAcceptText: ''
     })
   },
   onTileSelect(e) {
@@ -57,20 +61,23 @@ Page({
   },
   confirmChoice(userTile) {
     const analysis = this._preAnalysis
+    const handArr = this._handArr
     const bestTile = analysis[0].tile
     const isCorrect = userTile === bestTile
-    const explanation = generateExplanation(userTile, bestTile, analysis)
+    const explanation = generateExplanation(userTile, bestTile, analysis, handArr)
 
     const stats = getStats()
     recordResult(stats, this.data.difficulty, isCorrect)
 
-    const displayAnalysis = analysis.slice(0, 5).map(a => ({
-      tile: a.tile,
-      tileStr: tileToString(a.tile),
-      shanten: a.shanten,
-      totalAcceptCount: a.totalAcceptCount,
-      accepts: a.accepts
-    }))
+    // 格式化为人话
+    const displayAnalysis = analysis.slice(0, 5).map(a => formatAnalysisItem(a))
+    const bestItem = displayAnalysis[0]
+
+    // 计算进张条的最大值用于百分比
+    const maxAccept = Math.max(...displayAnalysis.map(a => a.totalAcceptCount), 1)
+    displayAnalysis.forEach(a => {
+      a.barWidth = Math.round(a.totalAcceptCount / maxAccept * 100)
+    })
 
     this.setData({
       confirmed: true,
@@ -80,7 +87,9 @@ Page({
       isCorrect,
       explanation,
       userTileStr: tileToString(userTile),
-      bestTileStr: tileToString(bestTile)
+      bestTileStr: tileToString(bestTile),
+      bestShantenText: shantenToText(bestItem.shanten),
+      bestAcceptText: `能摸到${bestItem.totalAcceptCount}张有用的牌`
     })
   },
   nextQuestion() {
