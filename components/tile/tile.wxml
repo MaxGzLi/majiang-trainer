@@ -1,4 +1,45 @@
-<view class="tile {{suitClass}} {{selected ? 'selected' : ''}} {{disabled ? 'disabled' : ''}} {{showBest ? 'best' : ''}}"
+<view class="tile {{suitClass}} {{selected ? 'selected' : ''}} {{disabled ? 'disabled' : ''}} {{showBest ? 'best' : ''}} {{small ? 'tile-small' : ''}}"
       bindtap="onTap">
-  <text class="tile-label">{{label}}</text>
+
+  <!-- 万子 (Characters) - Blue -->
+  <block wx:if="{{suitType === 'wan'}}">
+    <text class="wan-num">{{cnNumber}}</text>
+    <text class="wan-char">万</text>
+  </block>
+
+  <!-- 筒子 (Dots) - Blue circles -->
+  <block wx:elif="{{suitType === 'tong'}}">
+    <view class="dots-grid">
+      <view wx:for="{{dots}}" wx:key="index" class="dot-row">
+        <view class="dot"></view>
+        <view wx:if="{{item.dots >= 2}}" class="dot"></view>
+        <view wx:if="{{item.dots >= 3}}" class="dot"></view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 条子 (Bamboo) - Green -->
+  <block wx:elif="{{suitType === 'tiao'}}">
+    <text class="tiao-num">{{number}}</text>
+    <text class="tiao-char">条</text>
+  </block>
+
+  <!-- 风牌 (Winds) -->
+  <block wx:elif="{{suitType === 'feng'}}">
+    <text class="feng-char">{{charLabel}}</text>
+  </block>
+
+  <!-- 箭牌 (Dragons) -->
+  <block wx:elif="{{suitType === 'jian'}}">
+    <text class="jian-char jian-{{charLabel}}">{{charLabel}}</text>
+  </block>
+
+  <!-- 财神 (Joker) -->
+  <block wx:elif="{{suitType === 'joker'}}">
+    <text class="joker-char">{{charLabel}}</text>
+    <text class="joker-sub">神</text>
+  </block>
+
+  <!-- Danger dot indicator -->
+  <view wx:if="{{dangerLevel >= 0}}" class="danger-dot danger-{{dangerLevel}}"></view>
 </view>
