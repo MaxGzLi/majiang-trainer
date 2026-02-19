@@ -1,0 +1,33 @@
+.tile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 72rpx;
+  height: 100rpx;
+  background: #f5f0e1;
+  border: 2rpx solid #c8b88a;
+  border-radius: 8rpx;
+  margin: 4rpx;
+  box-shadow: 2rpx 4rpx 6rpx rgba(0,0,0,0.3);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.tile-label {
+  font-size: 28rpx;
+  font-weight: bold;
+}
+.wan .tile-label { color: #1a5276; }
+.tong .tile-label { color: #c0392b; }
+.tiao .tile-label { color: #27ae60; }
+.feng .tile-label, .jian .tile-label { color: #2c3e50; }
+.joker .tile-label { color: #8e44ad; font-size: 24rpx; }
+.joker { background: linear-gradient(135deg, #f5f0e1, #e8d5f5); }
+.selected {
+  transform: translateY(-16rpx);
+  box-shadow: 0 8rpx 16rpx rgba(0,0,0,0.4);
+  border-color: #e74c3c;
+}
+.best {
+  border-color: #27ae60;
+  box-shadow: 0 0 12rpx rgba(39,174,96,0.6);
+}
+.disabled { opacity: 0.6; }

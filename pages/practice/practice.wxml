@@ -1,0 +1,54 @@
+<view class="container">
+  <view class="header">
+    <text class="q-num">第 {{questionNum}} 题</text>
+    <text class="diff-tag">{{diffLabel}}</text>
+  </view>
+
+  <view class="prompt" wx:if="{{!confirmed}}">请选择要打出的牌（点击选中，再次点击确认）</view>
+
+  <view class="hand">
+    <tile wx:for="{{tiles}}" wx:key="index"
+          tileId="{{item}}"
+          selected="{{selectedTile === item && !confirmed}}"
+          showBest="{{confirmed && item === bestTile}}"
+          disabled="{{confirmed}}"
+          bind:select="onTileSelect" />
+  </view>
+
+  <block wx:if="{{confirmed}}">
+    <view class="result {{isCorrect ? 'correct' : 'wrong'}}">
+      <text class="result-text">{{isCorrect ? '正确！' : '可以更优'}}</text>
+    </view>
+
+    <view class="comparison" wx:if="{{!isCorrect}}">
+      <view class="comp-row">
+        <text class="comp-label">你的选择：</text>
+        <text>打 {{userTileStr}}</text>
+      </view>
+      <view class="comp-row">
+        <text class="comp-label">最优选择：</text>
+        <text class="best-text">打 {{bestTileStr}}</text>
+      </view>
+    </view>
+
+    <view class="analysis-list">
+      <view class="analysis-title">牌效对比</view>
+      <view class="analysis-item {{item.tile === bestTile ? 'best-item' : ''}} {{item.tile === userTile && !isCorrect ? 'user-item' : ''}}"
+            wx:for="{{analysis}}" wx:key="tile">
+        <text class="a-tile">打{{item.tileStr}}</text>
+        <text class="a-shanten">向听{{item.shanten}}</text>
+        <text class="a-count">进张{{item.totalAcceptCount}}张</text>
+      </view>
+    </view>
+
+    <view class="explanation" wx:if="{{explanation}}">
+      <text class="exp-label">解析</text>
+      <text class="exp-text">{{explanation}}</text>
+    </view>
+
+    <view class="actions">
+      <view class="next-btn" bindtap="nextQuestion">下一题</view>
+      <view class="back-btn" bindtap="goBack">返回首页</view>
+    </view>
+  </block>
+</view>

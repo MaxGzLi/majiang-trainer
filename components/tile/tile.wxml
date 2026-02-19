@@ -1,0 +1,4 @@
+<view class="tile {{suitClass}} {{selected ? 'selected' : ''}} {{disabled ? 'disabled' : ''}} {{showBest ? 'best' : ''}}"
+      bindtap="onTap">
+  <text class="tile-label">{{label}}</text>
+</view>

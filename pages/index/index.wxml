@@ -1,0 +1,23 @@
+<view class="container">
+  <view class="title">杭州麻将</view>
+  <view class="subtitle">何切训练器</view>
+
+  <view class="diff-section">
+    <view class="diff-label">选择难度</view>
+    <view class="diff-buttons">
+      <view class="diff-btn {{difficulty === 'easy' ? 'active' : ''}}"
+            data-level="easy" bindtap="selectDifficulty">入门</view>
+      <view class="diff-btn {{difficulty === 'medium' ? 'active' : ''}}"
+            data-level="medium" bindtap="selectDifficulty">进阶</view>
+      <view class="diff-btn {{difficulty === 'hard' ? 'active' : ''}}"
+            data-level="hard" bindtap="selectDifficulty">高级</view>
+    </view>
+  </view>
+
+  <view class="start-btn" bindtap="startPractice">开始练习</view>
+
+  <view class="stats-preview" wx:if="{{stats && stats.totalCount > 0}}" bindtap="goStats">
+    <text>已练习 {{stats.totalCount}} 题</text>
+    <text>正确率 {{correctRate}}%</text>
+  </view>
+</view>

@@ -1,0 +1,31 @@
+<view class="container">
+  <view class="stat-card">
+    <view class="stat-big">{{stats.totalCount}}</view>
+    <view class="stat-label">总练习题数</view>
+  </view>
+  <view class="stat-card">
+    <view class="stat-big">{{rate}}%</view>
+    <view class="stat-label">总正确率</view>
+  </view>
+  <view class="stat-card">
+    <view class="stat-big">{{stats.maxStreak}}</view>
+    <view class="stat-label">最长连对</view>
+  </view>
+
+  <view class="section-title">各难度正确率</view>
+  <view class="bar-item">
+    <text class="bar-label">入门</text>
+    <view class="bar-bg"><view class="bar-fill" style="width:{{easyRate}}%"></view></view>
+    <text class="bar-pct">{{easyRate}}%</text>
+  </view>
+  <view class="bar-item">
+    <text class="bar-label">进阶</text>
+    <view class="bar-bg"><view class="bar-fill medium" style="width:{{medRate}}%"></view></view>
+    <text class="bar-pct">{{medRate}}%</text>
+  </view>
+  <view class="bar-item">
+    <text class="bar-label">高级</text>
+    <view class="bar-bg"><view class="bar-fill hard" style="width:{{hardRate}}%"></view></view>
+    <text class="bar-pct">{{hardRate}}%</text>
+  </view>
+</view>

@@ -1,0 +1,12 @@
+.container { padding: 40rpx; }
+.stat-card { text-align: center; padding: 30rpx; background: rgba(255,255,255,0.05); border-radius: 12rpx; margin-bottom: 20rpx; }
+.stat-big { font-size: 56rpx; font-weight: bold; color: #e8c840; }
+.stat-label { font-size: 24rpx; color: #a8d8a8; margin-top: 8rpx; }
+.section-title { font-size: 28rpx; color: #f0e6d2; margin: 40rpx 0 20rpx; font-weight: bold; }
+.bar-item { display: flex; align-items: center; gap: 16rpx; margin-bottom: 16rpx; }
+.bar-label { font-size: 26rpx; color: #a8d8a8; width: 80rpx; }
+.bar-bg { flex: 1; height: 24rpx; background: rgba(255,255,255,0.1); border-radius: 12rpx; overflow: hidden; }
+.bar-fill { height: 100%; background: #27ae60; border-radius: 12rpx; transition: width 0.3s; }
+.bar-fill.medium { background: #e8c840; }
+.bar-fill.hard { background: #e74c3c; }
+.bar-pct { font-size: 24rpx; color: #f0e6d2; width: 80rpx; text-align: right; }
