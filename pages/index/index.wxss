@@ -2,25 +2,44 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 120rpx 40rpx 40rpx;
+  padding: 80rpx 32rpx 40rpx;
   min-height: 100vh;
 }
-.title { font-size: 56rpx; font-weight: bold; color: #f0e6d2; }
-.subtitle { font-size: 36rpx; color: #a8d8a8; margin-bottom: 80rpx; }
-.diff-section { width: 100%; margin-bottom: 60rpx; }
-.diff-label { text-align: center; font-size: 28rpx; color: #a8d8a8; margin-bottom: 20rpx; }
-.diff-buttons { display: flex; justify-content: center; gap: 20rpx; }
+.title { font-size: 52rpx; font-weight: bold; color: #f0e6d2; }
+.subtitle { font-size: 34rpx; color: #a8d8a8; margin-bottom: 48rpx; }
+
+/* 模式卡片 */
+.mode-section {
+  width: 100%;
+  background: rgba(255,255,255,0.06);
+  border-radius: 16rpx;
+  padding: 28rpx;
+  margin-bottom: 24rpx;
+}
+.mode-header { display: flex; align-items: center; gap: 16rpx; margin-bottom: 20rpx; }
+.mode-info { display: flex; flex-direction: column; }
+.mode-title { font-size: 32rpx; font-weight: bold; color: #f0e6d2; }
+.mode-desc { font-size: 22rpx; color: #a8d8a8; }
+
+.diff-buttons { display: flex; justify-content: center; gap: 16rpx; margin-bottom: 20rpx; }
 .diff-btn {
-  padding: 16rpx 40rpx; border: 2rpx solid #a8d8a8;
-  border-radius: 8rpx; font-size: 28rpx; color: #a8d8a8;
+  padding: 12rpx 32rpx; border: 2rpx solid #a8d8a8;
+  border-radius: 8rpx; font-size: 26rpx; color: #a8d8a8;
 }
 .diff-btn.active { background: #a8d8a8; color: #0d5a2a; font-weight: bold; }
+
 .start-btn {
-  width: 400rpx; height: 88rpx; background: #e8c840; color: #2c1810;
-  font-size: 36rpx; font-weight: bold; border-radius: 44rpx;
+  width: 100%; height: 80rpx; background: #e8c840; color: #2c1810;
+  font-size: 32rpx; font-weight: bold; border-radius: 40rpx;
   display: flex; align-items: center; justify-content: center;
-  margin-bottom: 60rpx; box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.3);
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.2);
 }
-.stats-preview {
-  display: flex; gap: 40rpx; font-size: 26rpx; color: #a8d8a8; padding: 20rpx;
+
+.heqie-start { background: #5c9aff; color: #fff; }
+
+.mode-stats { text-align: center; font-size: 22rpx; color: #a8d8a8; margin-top: 12rpx; }
+
+.stats-link {
+  font-size: 26rpx; color: #a8d8a8; margin-top: 16rpx;
+  padding: 12rpx 24rpx;
 }

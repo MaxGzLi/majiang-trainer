@@ -2,13 +2,14 @@
   "pages": [
     "pages/index/index",
     "pages/practice/practice",
+    "pages/heqie/heqie",
     "pages/result/result",
     "pages/stats/stats"
   ],
   "window": {
     "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#1a6b3c",
-    "navigationBarTitleText": "杭州麻将何切训练",
+    "navigationBarTitleText": "杭州麻将训练器",
     "navigationBarTextStyle": "white"
   }
 }
