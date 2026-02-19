@@ -99,7 +99,25 @@ function calcSevenPairsWithJoker(hand, jokerCount) {
   return 6 - pairs
 }
 
-// 含财神的向听数计算
+// 爆头向听数：1张财神做单牌 + 4组完整面子 = 听牌（摸任何牌都能胡）
+// 需要至少1张财神。计算方式：去掉1张财神后，剩余12张牌能否组成4组面子
+// 爆头向听 = 8 - 2*面子 - 搭子（不需要将，因为财神做单牌）
+function calcBaotouShanten(hand, jokerCount) {
+  if (jokerCount < 1) return 99 // 没有财神无法爆头
+
+  // 去掉1张财神用于"做单牌"，剩余jokerCount-1张财神+其他牌组4面子
+  const remainJokers = jokerCount - 1
+
+  // 计算不含财神的12张牌(或更少)能组多少面子
+  // 需要4组面子（不需要将）
+  const mentsuScore = _countMentsu(hand, 0, 0, 0)
+  // mentsuScore = 面子*2+搭子, 搭子<=4-面子
+  // 爆头向听 = 8 - mentsuScore - remainJokers
+  const shanten = 8 - mentsuScore - remainJokers
+  return Math.max(shanten, -1)
+}
+
+// 含财神的向听数计算（考虑普通、七对、爆头三条路线）
 function calcShantenWithJoker(hand) {
   const jokerCount = hand[JOKER_ID]
   hand[JOKER_ID] = 0
@@ -107,11 +125,18 @@ function calcShantenWithJoker(hand) {
   const regular = calcRegularShanten(hand)
   const total = hand.reduce((s, v) => s + v, 0) + jokerCount
   const qidui = total >= 13 ? calcSevenPairsWithJoker(hand, jokerCount) : 99
+  const baotou = calcBaotouShanten(hand, jokerCount)
 
   hand[JOKER_ID] = jokerCount // restore
 
-  const base = Math.min(regular, qidui)
-  return Math.max(base - jokerCount, -1)
+  // 普通路线和七对路线都受财神加持
+  const regularWithJoker = Math.max(regular - jokerCount, -1)
+  let best = Math.min(regularWithJoker, qidui, baotou)
+
+  // 不足14张牌时不可能完成胡牌（4面子+1将 和 七对 都需要14张）
+  if (total < 14 && best < 0) best = 0
+
+  return best
 }
 
 // 综合向听数（不含财神, backward compat）

@@ -12,7 +12,8 @@ function runTests() {
   assert(tiles.tileToString(18) === '1条', 'tileToString 18')
   assert(tiles.tileToString(27) === '东风', 'tileToString 27')
   assert(tiles.tileToString(31) === '中', 'tileToString 31')
-  assert(tiles.tileToString(33) === '白', 'tileToString 33')
+  assert(tiles.tileToString(33) === '财神', 'tileToString 33 should be 财神')
+  assert(tiles.tileToString(32) === '发', 'tileToString 32 should be 发')
 
   // isJoker
   assert(tiles.isJoker(33) === true, 'isJoker 33')

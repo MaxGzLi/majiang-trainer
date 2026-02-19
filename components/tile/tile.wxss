@@ -19,8 +19,8 @@
 .tong .tile-label { color: #c0392b; }
 .tiao .tile-label { color: #27ae60; }
 .feng .tile-label, .jian .tile-label { color: #2c3e50; }
-.joker .tile-label { color: #8e44ad; font-size: 24rpx; }
-.joker { background: linear-gradient(135deg, #f5f0e1, #e8d5f5); }
+.joker .tile-label { color: #c0392b; font-size: 26rpx; }
+.joker { background: linear-gradient(135deg, #fff8e1, #ffe082); border: 3rpx solid #f9a825; }
 .selected {
   transform: translateY(-16rpx);
   box-shadow: 0 8rpx 16rpx rgba(0,0,0,0.4);

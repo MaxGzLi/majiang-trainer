@@ -8,6 +8,7 @@ const DRAGON_NAMES = ['中', '发', '白']
 const JOKER_ID = 33 // 白板=财神
 
 function tileToString(id) {
+  if (id === JOKER_ID) return '财神'
   if (id <= 8) return `${id + 1}万`
   if (id <= 17) return `${id - 8}筒`
   if (id <= 26) return `${id - 17}条`
