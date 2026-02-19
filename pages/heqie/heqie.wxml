@@ -1,0 +1,105 @@
+<view class="container">
+  <view class="header">
+    <text class="q-num">第 {{questionNum}} 题</text>
+    <text class="type-tag">{{questionType === 'safety' ? '安全判断' : '攻守弃牌'}}</text>
+    <text class="diff-tag">{{diffLabel}}</text>
+  </view>
+
+  <!-- 牌河展示区 -->
+  <view class="rivers-area">
+    <view class="river-section" wx:for="{{rivers}}" wx:key="index" wx:if="{{item.length > 0}}">
+      <view class="river-header">
+        <text class="river-label">{{riverLabels[index]}}</text>
+        <text class="feed-warn" wx:if="{{myFeeds[index] >= 2}}">已喂{{myFeeds[index]}}摊</text>
+        <text class="feed-info" wx:elif="{{myFeeds[index] === 1}}">已喂1摊</text>
+      </view>
+      <view class="river-tiles">
+        <tile wx:for="{{item}}" wx:key="idx" wx:for-item="tid"
+              tileId="{{tid}}" small="{{true}}" disabled="{{true}}" />
+      </view>
+      <!-- 明牌 -->
+      <view class="melds" wx:if="{{openMelds[index].length > 0}}">
+        <view class="meld" wx:for="{{openMelds[index]}}" wx:key="mi" wx:for-item="meld">
+          <text class="meld-type">{{meld.type === 'pon' ? '碰' : '吃'}}</text>
+          <tile wx:for="{{meld.tiles}}" wx:key="ti" wx:for-item="mt"
+                tileId="{{mt}}" small="{{true}}" disabled="{{true}}" />
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 安全判断题 -->
+  <block wx:if="{{questionType === 'safety' && !confirmed}}">
+    <view class="safety-question">
+      <text class="safety-prompt">这张牌打出去安全吗？</text>
+      <view class="target-tile-wrap">
+        <tile tileId="{{targetTile}}" disabled="{{true}}" />
+      </view>
+      <view class="safety-choices">
+        <view class="safety-btn safe" data-level="0" bindtap="onSafetyChoice">安全</view>
+        <view class="safety-btn warn" data-level="1" bindtap="onSafetyChoice">注意</view>
+        <view class="safety-btn danger" data-level="2" bindtap="onSafetyChoice">危险</view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 弃牌题 -->
+  <block wx:if="{{questionType === 'discard'}}">
+    <view class="prompt" wx:if="{{!confirmed}}">综合牌效和安全性，选一张打出（点两次确认）</view>
+    <view class="hand">
+      <tile wx:for="{{myHand}}" wx:key="index"
+            tileId="{{item}}"
+            selected="{{selectedTile === item && !confirmed}}"
+            showBest="{{confirmed && item === bestTile}}"
+            disabled="{{confirmed}}"
+            bind:select="onTileSelect" />
+    </view>
+  </block>
+
+  <!-- 答题结果 -->
+  <block wx:if="{{confirmed}}">
+    <view class="result {{isCorrect ? 'correct' : 'wrong'}}">
+      <text class="result-text">{{isCorrect ? '判断正确！' : '不太对'}}</text>
+    </view>
+
+    <!-- 安全判断题的正确答案 -->
+    <view class="correct-answer" wx:if="{{questionType === 'safety'}}">
+      <text>正确答案：{{correctLabel}}</text>
+    </view>
+
+    <!-- 弃牌题的正确答案 -->
+    <view class="correct-answer" wx:if="{{questionType === 'discard' && !isCorrect}}">
+      <text>更好的选择：打 {{bestTileStr}}</text>
+    </view>
+
+    <!-- 解析 -->
+    <view class="explanation">
+      <view class="exp-header"><text class="exp-label">为什么？</text></view>
+      <text class="exp-text">{{explanation}}</text>
+    </view>
+
+    <!-- 弃牌对比（仅弃牌题） -->
+    <view class="analysis-list" wx:if="{{questionType === 'discard' && analysis.length > 0}}">
+      <view class="analysis-header">
+        <text class="analysis-title">各选择对比</text>
+      </view>
+      <view class="analysis-item {{item.tile === bestTile ? 'best-item' : ''}}"
+            wx:for="{{analysis}}" wx:key="tile">
+        <view class="a-left">
+          <text class="a-tile">打{{item.tileStr}}</text>
+          <text class="a-steps">{{item.shantenText}}</text>
+        </view>
+        <view class="a-bar-wrap">
+          <view class="a-bar" style="width: {{item.barWidth}}%"></view>
+        </view>
+        <text class="a-count">{{item.totalAcceptCount}}张</text>
+        <text class="a-danger {{item.dangerClass}}">{{item.dangerLabel}}</text>
+      </view>
+    </view>
+
+    <view class="actions">
+      <view class="next-btn" bindtap="nextQuestion">下一题</view>
+      <view class="back-btn" bindtap="goBack">返回首页</view>
+    </view>
+  </block>
+</view>

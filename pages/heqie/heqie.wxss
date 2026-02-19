@@ -1,0 +1,71 @@
+.container { padding: 20rpx; }
+.header { display: flex; align-items: center; gap: 16rpx; margin-bottom: 20rpx; }
+.q-num { font-size: 32rpx; color: #f0e6d2; }
+.type-tag { font-size: 22rpx; padding: 4rpx 12rpx; background: rgba(232,200,64,0.2); color: #e8c840; border-radius: 6rpx; }
+.diff-tag { font-size: 22rpx; padding: 4rpx 12rpx; background: rgba(168,216,168,0.2); color: #a8d8a8; border-radius: 6rpx; }
+
+/* 牌河区域 */
+.rivers-area { margin-bottom: 24rpx; }
+.river-section { background: rgba(255,255,255,0.05); border-radius: 12rpx; padding: 16rpx; margin-bottom: 12rpx; }
+.river-header { display: flex; align-items: center; gap: 12rpx; margin-bottom: 8rpx; }
+.river-label { font-size: 24rpx; color: #a8d8a8; font-weight: bold; }
+.feed-warn { font-size: 22rpx; color: #f44336; font-weight: bold; }
+.feed-info { font-size: 22rpx; color: #ff9800; }
+.river-tiles { display: flex; flex-wrap: wrap; }
+.melds { display: flex; gap: 16rpx; margin-top: 8rpx; padding-top: 8rpx; border-top: 1rpx solid rgba(255,255,255,0.1); }
+.meld { display: flex; align-items: center; gap: 4rpx; }
+.meld-type { font-size: 20rpx; color: #ff9800; margin-right: 4rpx; }
+
+/* 安全判断题 */
+.safety-question { text-align: center; }
+.safety-prompt { font-size: 30rpx; color: #f0e6d2; display: block; margin-bottom: 24rpx; }
+.target-tile-wrap { display: flex; justify-content: center; margin-bottom: 30rpx; }
+.safety-choices { display: flex; justify-content: center; gap: 24rpx; }
+.safety-btn { padding: 20rpx 32rpx; border-radius: 12rpx; font-size: 28rpx; font-weight: bold; }
+.safety-btn.safe { background: rgba(76,175,80,0.2); color: #4caf50; border: 2rpx solid #4caf50; }
+.safety-btn.warn { background: rgba(255,152,0,0.2); color: #ff9800; border: 2rpx solid #ff9800; }
+.safety-btn.danger { background: rgba(244,67,54,0.2); color: #f44336; border: 2rpx solid #f44336; }
+
+/* 弃牌题 */
+.prompt { text-align: center; font-size: 26rpx; color: #a8d8a8; margin-bottom: 16rpx; }
+.hand { display: flex; flex-wrap: wrap; justify-content: center; padding: 10rpx 0 20rpx; }
+
+/* 结果 */
+.result { display: flex; align-items: center; justify-content: center; padding: 24rpx; border-radius: 12rpx; margin-bottom: 16rpx; }
+.result.correct { background: rgba(39,174,96,0.2); }
+.result.wrong { background: rgba(231,76,60,0.2); }
+.result-text { font-size: 34rpx; font-weight: bold; }
+.result.correct .result-text { color: #27ae60; }
+.result.wrong .result-text { color: #e74c3c; }
+
+.correct-answer { text-align: center; font-size: 28rpx; color: #f0e6d2; margin-bottom: 16rpx; padding: 12rpx; background: rgba(255,255,255,0.05); border-radius: 8rpx; }
+
+/* 解析 */
+.explanation { background: rgba(232,200,64,0.12); border-radius: 12rpx; padding: 24rpx; margin-bottom: 20rpx; border-left: 6rpx solid #e8c840; }
+.exp-header { margin-bottom: 12rpx; }
+.exp-label { font-size: 28rpx; color: #e8c840; font-weight: bold; }
+.exp-text { font-size: 28rpx; line-height: 1.8; color: #f0e6d2; }
+
+/* 弃牌对比 */
+.analysis-list { background: rgba(255,255,255,0.05); border-radius: 12rpx; padding: 20rpx; margin-bottom: 30rpx; }
+.analysis-header { margin-bottom: 16rpx; }
+.analysis-title { font-size: 26rpx; color: #a8d8a8; font-weight: bold; }
+.analysis-item { display: flex; align-items: center; padding: 10rpx 12rpx; border-radius: 8rpx; margin-bottom: 8rpx; gap: 10rpx; }
+.a-left { display: flex; flex-direction: column; width: 90rpx; flex-shrink: 0; }
+.a-tile { font-size: 24rpx; font-weight: bold; color: #f0e6d2; }
+.a-steps { font-size: 20rpx; color: #a8d8a8; }
+.a-bar-wrap { flex: 1; height: 20rpx; background: rgba(255,255,255,0.08); border-radius: 10rpx; overflow: hidden; }
+.a-bar { height: 100%; background: #5a9a6a; border-radius: 10rpx; min-width: 4rpx; }
+.a-count { font-size: 22rpx; color: #c0c0c0; width: 60rpx; text-align: right; flex-shrink: 0; }
+.a-danger { font-size: 20rpx; width: 60rpx; text-align: center; border-radius: 4rpx; padding: 2rpx 0; }
+.a-danger.safe { color: #4caf50; }
+.a-danger.warn { color: #ff9800; }
+.a-danger.high { color: #f44336; }
+.best-item { background: rgba(39,174,96,0.12); }
+.best-item .a-tile { color: #27ae60; }
+.best-item .a-bar { background: #27ae60; }
+
+/* 操作按钮 */
+.actions { display: flex; justify-content: center; gap: 30rpx; padding-bottom: 40rpx; }
+.next-btn { padding: 16rpx 60rpx; background: #e8c840; color: #2c1810; font-size: 30rpx; font-weight: bold; border-radius: 40rpx; }
+.back-btn { padding: 16rpx 40rpx; border: 2rpx solid #a8d8a8; color: #a8d8a8; font-size: 30rpx; border-radius: 40rpx; }
