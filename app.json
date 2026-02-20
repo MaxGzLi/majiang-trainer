@@ -1,8 +1,14 @@
 {
+  "cloud": true,
   "pages": [
     "pages/index/index",
+    "pages/practice-menu/practice-menu",
+    "pages/battle-menu/battle-menu",
     "pages/practice/practice",
     "pages/heqie/heqie",
+    "pages/streak/streak",
+    "pages/pk/pk",
+    "pages/pk-battle/pk-battle",
     "pages/result/result",
     "pages/stats/stats"
   ],

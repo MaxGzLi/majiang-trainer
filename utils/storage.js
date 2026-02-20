@@ -4,10 +4,10 @@ function getStats() {
   try {
     const data = wx.getStorageSync(STORAGE_KEY)
     if (!data) return createDefaultStats()
-    // 兼容旧版本：如果没有 heqie 字段则补上
-    if (!data.heqie) {
-      data.heqie = createDefaultHeqieStats()
-    }
+    // 兼容旧版本：补上缺失字段
+    if (!data.heqie) data.heqie = createDefaultHeqieStats()
+    if (!data.streakMode) data.streakMode = createDefaultStreakModeStats()
+    if (!data.pkMode) data.pkMode = createDefaultPkModeStats()
     return data
   } catch (e) {
     return createDefaultStats()
@@ -38,6 +38,14 @@ function createDefaultHeqieStats() {
   }
 }
 
+function createDefaultStreakModeStats() {
+  return { bestStreak: 0, totalGames: 0 }
+}
+
+function createDefaultPkModeStats() {
+  return { wins: 0, losses: 0, draws: 0 }
+}
+
 function createDefaultStats() {
   return {
     totalCount: 0,
@@ -49,7 +57,9 @@ function createDefaultStats() {
       medium: { total: 0, correct: 0 },
       hard: { total: 0, correct: 0 }
     },
-    heqie: createDefaultHeqieStats()
+    heqie: createDefaultHeqieStats(),
+    streakMode: createDefaultStreakModeStats(),
+    pkMode: createDefaultPkModeStats()
   }
 }
 

@@ -1,0 +1,49 @@
+<view class="page">
+  <view class="cards">
+    <!-- 连对挑战 -->
+    <view class="card">
+      <view class="card-top">
+        <view class="card-icon icon-streak">连</view>
+        <view class="card-info">
+          <text class="card-title">连对挑战</text>
+          <text class="card-desc">何切河切混合，连续答对才能续命</text>
+        </view>
+      </view>
+      <view class="detail-list">
+        <view class="detail-row">
+          <view class="detail-dot"></view>
+          <text class="detail-text">难度随连对数递增</text>
+        </view>
+        <view class="detail-row">
+          <view class="detail-dot"></view>
+          <text class="detail-text">答错可看广告复活，每局 3 次</text>
+        </view>
+      </view>
+      <navigator url="/pages/streak/streak" hover-class="btn-hover" class="start-btn btn-streak">开始挑战</navigator>
+      <text class="stat-line" wx:if="{{streakGames > 0}}">最佳 {{streakBest}} 连对 · 已挑战 {{streakGames}} 局</text>
+    </view>
+
+    <!-- 1v1 PK -->
+    <view class="card">
+      <view class="card-top">
+        <view class="card-icon icon-pk">PK</view>
+        <view class="card-info">
+          <text class="card-title">1v1 实时PK</text>
+          <text class="card-desc">邀请好友同题竞速，实时看对方进度</text>
+        </view>
+      </view>
+      <view class="detail-list">
+        <view class="detail-row">
+          <view class="detail-dot"></view>
+          <text class="detail-text">20 题混合何切河切</text>
+        </view>
+        <view class="detail-row">
+          <view class="detail-dot"></view>
+          <text class="detail-text">每天 2 次免费机会</text>
+        </view>
+      </view>
+      <navigator url="/pages/pk/pk" hover-class="btn-hover" class="start-btn btn-pk">发起挑战</navigator>
+      <text class="stat-line" wx:if="{{pkWins > 0 || pkLosses > 0}}">{{pkWins}} 胜 {{pkLosses}} 负</text>
+    </view>
+  </view>
+</view>

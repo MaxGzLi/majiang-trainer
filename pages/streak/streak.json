@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "连对挑战",
+  "usingComponents": {
+    "tile": "/components/tile/tile"
+  }
+}

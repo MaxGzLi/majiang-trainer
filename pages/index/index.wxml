@@ -1,50 +1,81 @@
-<view class="container">
-  <view class="title">杭州麻将</view>
-  <view class="subtitle">训练器</view>
-
-  <!-- 何切练习 -->
-  <view class="mode-section">
-    <view class="mode-header">
-      <view class="mode-info">
-        <text class="mode-title">何切练习</text>
-        <text class="mode-desc">选最优弃牌，练牌效</text>
-      </view>
-    </view>
-    <view class="diff-buttons">
-      <view class="diff-btn {{difficulty === 'easy' ? 'active' : ''}}"
-            data-level="easy" bindtap="selectDifficulty">入门</view>
-      <view class="diff-btn {{difficulty === 'medium' ? 'active' : ''}}"
-            data-level="medium" bindtap="selectDifficulty">进阶</view>
-      <view class="diff-btn {{difficulty === 'hard' ? 'active' : ''}}"
-            data-level="hard" bindtap="selectDifficulty">高级</view>
-    </view>
-    <view class="start-btn" bindtap="startPractice">开始练习</view>
-    <view class="mode-stats" wx:if="{{stats && stats.totalCount > 0}}">
-      <text>已练{{stats.totalCount}}题 · 正确率{{correctRate}}%</text>
-    </view>
+<view class="page">
+  <!-- Background watermark -->
+  <view class="watermark">
+    <text class="wm wm1">九萬</text>
+    <text class="wm wm2">四筒</text>
+    <text class="wm wm3">二萬</text>
+    <text class="wm wm4">南</text>
+    <text class="wm wm5">一萬</text>
+    <text class="wm wm6">發</text>
+    <text class="wm wm7">七筒</text>
   </view>
 
-  <!-- 河切练习 -->
-  <view class="mode-section heqie-section">
-    <view class="mode-header">
-      <view class="mode-info">
-        <text class="mode-title">河切练习</text>
-        <text class="mode-desc">读牌河，练攻守</text>
+  <!-- Logo -->
+  <view class="hero">
+    <view class="logo-ring">
+      <view class="logo-tile">
+        <text class="logo-char">麻</text>
       </view>
     </view>
-    <view class="diff-buttons">
-      <view class="diff-btn {{heqieDifficulty === 'easy' ? 'active' : ''}}"
-            data-level="easy" bindtap="selectHeqieDifficulty">入门</view>
-      <view class="diff-btn {{heqieDifficulty === 'medium' ? 'active' : ''}}"
-            data-level="medium" bindtap="selectHeqieDifficulty">进阶</view>
-      <view class="diff-btn {{heqieDifficulty === 'hard' ? 'active' : ''}}"
-            data-level="hard" bindtap="selectHeqieDifficulty">高级</view>
-    </view>
-    <view class="start-btn heqie-start" bindtap="startHeqie">开始练习</view>
-    <view class="mode-stats" wx:if="{{heqieStats && heqieStats.totalCount > 0}}">
-      <text>已练{{heqieStats.totalCount}}题 · 正确率{{heqieCorrectRate}}%</text>
-    </view>
+    <text class="title">杭州麻将训练器</text>
   </view>
 
-  <view class="stats-link" bindtap="goStats">练习统计 ></view>
+  <!-- Cards -->
+  <view class="cards">
+    <!-- 练习模式 -->
+    <navigator url="/pages/practice-menu/practice-menu" hover-class="card-hover" class="card card-practice">
+      <view class="card-body">
+        <text class="card-badge badge-green">【基础】</text>
+        <text class="card-title">练习模式</text>
+        <text class="card-desc">何切 / 河切分项练习，三档难度逐步进阶</text>
+        <view class="card-footer">
+          <text class="card-stat stat-green" wx:if="{{totalPractice > 0}}">已练 {{totalPractice}} 题</text>
+          <view class="arrow-btn arrow-green">
+            <text class="arrow-text arrow-text-green">→</text>
+          </view>
+        </view>
+      </view>
+      <view class="card-deco">
+        <view class="deco-target">
+          <view class="t-ring t-outer"></view>
+          <view class="t-ring t-mid"></view>
+          <view class="t-dot"></view>
+          <view class="t-arrow"></view>
+          <view class="t-arrow-head"></view>
+        </view>
+      </view>
+    </navigator>
+
+    <!-- 对战模式 -->
+    <navigator url="/pages/battle-menu/battle-menu" hover-class="card-hover" class="card card-battle">
+      <view class="card-body">
+        <text class="card-badge badge-brown">【竞技】</text>
+        <text class="card-title">对战模式</text>
+        <text class="card-desc">连对挑战 / 1v1 实时PK，和牌友一较高下</text>
+        <view class="card-footer">
+          <text class="card-stat stat-brown" wx:if="{{totalBattle > 0}}">已战 {{totalBattle}} 场</text>
+          <view class="arrow-btn arrow-brown">
+            <text class="arrow-text arrow-text-brown">→</text>
+          </view>
+        </view>
+      </view>
+      <view class="card-deco">
+        <view class="deco-swords">
+          <view class="sword sword-l"></view>
+          <view class="sword sword-r"></view>
+          <view class="sword-shield">
+            <text class="shield-char">战</text>
+          </view>
+        </view>
+      </view>
+    </navigator>
+  </view>
+
+  <!-- Bottom -->
+  <navigator url="/pages/stats/stats" hover-class="pill-hover" class="bottom-pill">
+    <text class="pill-text">查看练习统计 →</text>
+  </navigator>
+
+  <!-- Bottom decoration -->
+  <view class="bottom-diamond"></view>
 </view>

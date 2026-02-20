@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "PK对战",
+  "usingComponents": {
+    "tile": "/components/tile/tile"
+  }
+}

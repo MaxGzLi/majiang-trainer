@@ -1,45 +1,304 @@
-.container {
+page { height: 100%; }
+
+.page {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 80rpx 32rpx 40rpx;
-  min-height: 100vh;
+  justify-content: center;
+  height: 100%;
+  padding: 0 48rpx;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
 }
-.title { font-size: 52rpx; font-weight: bold; color: #f0e6d2; }
-.subtitle { font-size: 34rpx; color: #a8d8a8; margin-bottom: 48rpx; }
 
-/* 模式卡片 */
-.mode-section {
-  width: 100%;
-  background: rgba(255,255,255,0.06);
+/* ===== Background watermark ===== */
+.watermark {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.wm {
+  position: absolute;
+  font-size: 140rpx;
+  font-weight: bold;
+  color: rgba(255,255,255,0.035);
+  line-height: 1;
+}
+.wm1 { top: 2%;   left: -8%;  transform: rotate(-18deg); }
+.wm2 { top: 12%;  right: -12%; transform: rotate(22deg); }
+.wm3 { top: 32%;  left: 5%;   transform: rotate(-12deg); }
+.wm4 { top: 50%;  right: 0%;  transform: rotate(16deg); font-size: 120rpx; }
+.wm5 { top: 68%;  left: -6%;  transform: rotate(-22deg); }
+.wm6 { bottom: 12%; right: 8%; transform: rotate(14deg); font-size: 120rpx; }
+.wm7 { bottom: 2%;  left: 15%; transform: rotate(-8deg); }
+
+/* ===== Hero / Logo ===== */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 56rpx;
+  position: relative;
+  z-index: 1;
+}
+.logo-ring {
+  width: 200rpx;
+  height: 200rpx;
+  border: 6rpx solid rgba(200,168,64,0.7);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 28rpx;
+  box-shadow: 0 0 40rpx rgba(200,168,64,0.12), inset 0 0 20rpx rgba(200,168,64,0.06);
+}
+.logo-tile {
+  width: 108rpx;
+  height: 128rpx;
+  background: linear-gradient(165deg, #f5f0e0 0%, #e8dfc8 50%, #ddd4b8 100%);
   border-radius: 16rpx;
-  padding: 28rpx;
-  margin-bottom: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.25), 0 1rpx 3rpx rgba(0,0,0,0.15);
 }
-.mode-header { display: flex; align-items: center; gap: 16rpx; margin-bottom: 20rpx; }
-.mode-info { display: flex; flex-direction: column; }
-.mode-title { font-size: 32rpx; font-weight: bold; color: #f0e6d2; }
-.mode-desc { font-size: 22rpx; color: #a8d8a8; }
-
-.diff-buttons { display: flex; justify-content: center; gap: 16rpx; margin-bottom: 20rpx; }
-.diff-btn {
-  padding: 12rpx 32rpx; border: 2rpx solid #a8d8a8;
-  border-radius: 8rpx; font-size: 26rpx; color: #a8d8a8;
+.logo-char {
+  font-size: 58rpx;
+  font-weight: bold;
+  color: #2a6a3a;
 }
-.diff-btn.active { background: #a8d8a8; color: #0d5a2a; font-weight: bold; }
-
-.start-btn {
-  width: 100%; height: 80rpx; background: #e8c840; color: #2c1810;
-  font-size: 32rpx; font-weight: bold; border-radius: 40rpx;
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.2);
+.title {
+  font-size: 42rpx;
+  font-weight: bold;
+  color: #f0e6d2;
+  letter-spacing: 6rpx;
 }
 
-.heqie-start { background: #5c9aff; color: #fff; }
+/* ===== Cards container ===== */
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
 
-.mode-stats { text-align: center; font-size: 22rpx; color: #a8d8a8; margin-top: 12rpx; }
+/* ===== Card base ===== */
+.card {
+  display: flex;
+  align-items: stretch;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.15s ease;
+}
+.card-hover { transform: scale(0.97); opacity: 0.9; }
 
-.stats-link {
-  font-size: 26rpx; color: #a8d8a8; margin-top: 16rpx;
-  padding: 12rpx 24rpx;
+.card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.card-deco {
+  width: 110rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ===== Practice card ===== */
+.card-practice {
+  background: linear-gradient(150deg, rgba(22,72,42,0.92) 0%, rgba(14,56,30,0.96) 100%);
+  border: 2rpx solid rgba(168,216,168,0.12);
+}
+
+/* ===== Battle card ===== */
+.card-battle {
+  background: linear-gradient(150deg, #5c3a1e 0%, #3d2412 100%);
+  border: 2rpx solid rgba(180,130,70,0.2);
+}
+
+/* ===== Badge ===== */
+.card-badge {
+  font-size: 22rpx;
+  font-weight: bold;
+  margin-bottom: 8rpx;
+  display: block;
+}
+.badge-green { color: #5eb85e; }
+.badge-brown { color: #c8a050; }
+
+/* ===== Card text ===== */
+.card-title {
+  display: block;
+  font-size: 38rpx;
+  font-weight: bold;
+  color: #f0e6d2;
+  margin-bottom: 10rpx;
+}
+.card-desc {
+  display: block;
+  font-size: 24rpx;
+  line-height: 1.5;
+  margin-bottom: 20rpx;
+}
+.card-practice .card-desc { color: rgba(180,216,180,0.65); }
+.card-battle .card-desc { color: rgba(220,200,170,0.65); }
+
+/* ===== Footer ===== */
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.card-stat {
+  font-size: 24rpx;
+  font-weight: 500;
+}
+.stat-green { color: #5eb85e; }
+.stat-brown { color: #c8a050; }
+
+/* ===== Arrow button ===== */
+.arrow-btn {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.arrow-green { background: rgba(94,184,94,0.2); }
+.arrow-brown { background: rgba(200,160,80,0.2); }
+.arrow-text {
+  font-size: 30rpx;
+  font-weight: bold;
+}
+.arrow-text-green { color: #5eb85e; }
+.arrow-text-brown { color: #c8a050; }
+
+/* ===== Target icon (practice) ===== */
+.deco-target {
+  position: relative;
+  width: 80rpx;
+  height: 80rpx;
+}
+.t-ring {
+  position: absolute;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+.t-outer {
+  width: 80rpx; height: 80rpx;
+  top: 0; left: 0;
+  border: 4rpx solid rgba(94,184,94,0.5);
+}
+.t-mid {
+  width: 50rpx; height: 50rpx;
+  top: 15rpx; left: 15rpx;
+  border: 4rpx solid rgba(94,184,94,0.4);
+  background: rgba(94,184,94,0.08);
+}
+.t-dot {
+  position: absolute;
+  width: 16rpx; height: 16rpx;
+  top: 32rpx; left: 32rpx;
+  border-radius: 50%;
+  background: rgba(232,200,64,0.6);
+}
+.t-arrow {
+  position: absolute;
+  width: 40rpx; height: 4rpx;
+  background: rgba(232,200,64,0.5);
+  top: 38rpx; left: 44rpx;
+  transform: rotate(-35deg);
+  transform-origin: left center;
+}
+.t-arrow-head {
+  position: absolute;
+  width: 0; height: 0;
+  border-left: 10rpx solid rgba(232,200,64,0.5);
+  border-top: 6rpx solid transparent;
+  border-bottom: 6rpx solid transparent;
+  top: 17rpx; left: 72rpx;
+  transform: rotate(-35deg);
+}
+
+/* ===== Swords icon (battle) ===== */
+.deco-swords {
+  position: relative;
+  width: 80rpx;
+  height: 90rpx;
+}
+.sword {
+  position: absolute;
+  width: 8rpx;
+  height: 72rpx;
+  border-radius: 4rpx;
+  top: 4rpx;
+}
+.sword-l {
+  left: 20rpx;
+  background: linear-gradient(to bottom, #a08040, #c8a860);
+  transform: rotate(20deg);
+  transform-origin: center bottom;
+}
+.sword-r {
+  right: 20rpx;
+  background: linear-gradient(to bottom, #a08040, #c8a860);
+  transform: rotate(-20deg);
+  transform-origin: center bottom;
+}
+.sword-shield {
+  position: absolute;
+  width: 36rpx;
+  height: 36rpx;
+  top: 30rpx;
+  left: 22rpx;
+  background: linear-gradient(135deg, #c8a050, #a07830);
+  border-radius: 6rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(45deg);
+}
+.shield-char {
+  font-size: 18rpx;
+  font-weight: bold;
+  color: #fff;
+  transform: rotate(-45deg);
+}
+
+/* ===== Bottom pill button ===== */
+.bottom-pill {
+  margin-top: 48rpx;
+  padding: 18rpx 44rpx;
+  border: 2rpx solid rgba(168,216,168,0.25);
+  border-radius: 44rpx;
+  background: rgba(168,216,168,0.06);
+  position: relative;
+  z-index: 1;
+}
+.pill-text {
+  font-size: 26rpx;
+  color: rgba(168,216,168,0.6);
+}
+.pill-hover { opacity: 0.7; }
+
+/* ===== Bottom diamond ===== */
+.bottom-diamond {
+  position: absolute;
+  bottom: 60rpx;
+  right: 48rpx;
+  width: 20rpx;
+  height: 20rpx;
+  background: #4a9a5a;
+  transform: rotate(45deg);
+  z-index: 1;
 }

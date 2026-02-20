@@ -1,0 +1,65 @@
+<view class="container">
+  <!-- 菜单状态 -->
+  <block wx:if="{{pageState === 'menu'}}">
+    <view class="pk-title">1v1 实时PK</view>
+    <view class="pk-desc">20题混合何切河切，和好友同题竞速！</view>
+
+    <view class="attempt-info">
+      <text>今日剩余免费次数：{{remainingAttempts}}</text>
+    </view>
+
+    <view class="menu-actions">
+      <view class="create-btn" bindtap="onCreateRoom">
+        <text class="btn-text">发起挑战</text>
+        <text class="btn-hint">创建房间，等好友加入</text>
+      </view>
+
+      <view class="join-section">
+        <text class="join-label">输入房间号加入</text>
+        <view class="join-row">
+          <input class="room-input" placeholder="6位房间号" maxlength="6"
+                 value="{{inputRoomId}}" bindinput="onJoinInput" />
+          <view class="join-btn" bindtap="onJoinRoom">加入</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="error-msg" wx:if="{{errorMsg}}">{{errorMsg}}</view>
+  </block>
+
+  <!-- 等待对手加入 -->
+  <block wx:if="{{pageState === 'waiting'}}">
+    <view class="waiting-area">
+      <view class="waiting-icon">⏳</view>
+      <text class="waiting-text">等待对手加入...</text>
+      <view class="room-code">
+        <text class="room-code-label">房间号</text>
+        <text class="room-code-num">{{roomId}}</text>
+      </view>
+      <text class="waiting-hint">把房间号分享给好友，或点击下方按钮</text>
+      <button class="share-btn" open-type="share">分享给好友</button>
+      <view class="cancel-btn" bindtap="goBack">取消</view>
+    </view>
+  </block>
+
+  <!-- 加入中 -->
+  <block wx:if="{{pageState === 'joining'}}">
+    <view class="waiting-area">
+      <view class="waiting-icon">🔗</view>
+      <text class="waiting-text">正在加入房间...</text>
+    </view>
+  </block>
+
+  <!-- 倒计时 -->
+  <block wx:if="{{pageState === 'countdown'}}">
+    <view class="countdown-area">
+      <text class="countdown-label">对手已就位！</text>
+      <text class="countdown-num">{{countdown}}</text>
+      <text class="countdown-hint">准备开始...</text>
+    </view>
+  </block>
+
+  <view class="loading-mask" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+  </view>
+</view>

@@ -1,0 +1,45 @@
+<view class="page">
+  <view class="cards">
+    <!-- 何切练习 -->
+    <view class="card">
+      <view class="card-top">
+        <view class="card-icon icon-heqie">切</view>
+        <view class="card-info">
+          <text class="card-title">何切练习</text>
+          <text class="card-desc">14张手牌，选最优弃牌，练牌效</text>
+        </view>
+      </view>
+      <view class="diff-row">
+        <view class="diff-btn {{difficulty === 'easy' ? 'diff-active' : ''}}"
+              data-level="easy" bindtap="selectDifficulty">入门</view>
+        <view class="diff-btn {{difficulty === 'medium' ? 'diff-active' : ''}}"
+              data-level="medium" bindtap="selectDifficulty">进阶</view>
+        <view class="diff-btn {{difficulty === 'hard' ? 'diff-active' : ''}}"
+              data-level="hard" bindtap="selectDifficulty">高级</view>
+      </view>
+      <navigator url="/pages/practice/practice?difficulty={{difficulty}}" hover-class="btn-hover" class="start-btn btn-gold">开始练习</navigator>
+      <text class="stat-line" wx:if="{{stats && stats.totalCount > 0}}">已练 {{stats.totalCount}} 题 · 正确率 {{correctRate}}%</text>
+    </view>
+
+    <!-- 河切练习 -->
+    <view class="card">
+      <view class="card-top">
+        <view class="card-icon icon-river">河</view>
+        <view class="card-info">
+          <text class="card-title">河切练习</text>
+          <text class="card-desc">读牌河判安全，练攻守平衡</text>
+        </view>
+      </view>
+      <view class="diff-row">
+        <view class="diff-btn {{heqieDifficulty === 'easy' ? 'diff-active' : ''}}"
+              data-level="easy" bindtap="selectHeqieDifficulty">入门</view>
+        <view class="diff-btn {{heqieDifficulty === 'medium' ? 'diff-active' : ''}}"
+              data-level="medium" bindtap="selectHeqieDifficulty">进阶</view>
+        <view class="diff-btn {{heqieDifficulty === 'hard' ? 'diff-active' : ''}}"
+              data-level="hard" bindtap="selectHeqieDifficulty">高级</view>
+      </view>
+      <navigator url="/pages/heqie/heqie?difficulty={{heqieDifficulty}}" hover-class="btn-hover" class="start-btn btn-blue">开始练习</navigator>
+      <text class="stat-line" wx:if="{{heqieStats && heqieStats.totalCount > 0}}">已练 {{heqieStats.totalCount}} 题 · 正确率 {{heqieCorrectRate}}%</text>
+    </view>
+  </view>
+</view>

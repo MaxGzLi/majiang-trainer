@@ -1,0 +1,78 @@
+.container { padding: 40rpx 32rpx; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+
+.pk-title { font-size: 48rpx; font-weight: bold; color: #f0e6d2; margin-bottom: 12rpx; }
+.pk-desc { font-size: 26rpx; color: #a8d8a8; margin-bottom: 40rpx; text-align: center; }
+
+.attempt-info { font-size: 24rpx; color: #e8c840; margin-bottom: 40rpx; padding: 12rpx 24rpx; background: rgba(232,200,64,0.12); border-radius: 8rpx; }
+
+/* 菜单按钮 */
+.menu-actions { width: 100%; }
+.create-btn {
+  width: 100%; padding: 28rpx; margin-bottom: 40rpx;
+  background: linear-gradient(135deg, #5c9aff, #7c4dff);
+  border-radius: 16rpx; text-align: center;
+  box-shadow: 0 8rpx 24rpx rgba(92,154,255,0.3);
+}
+.btn-text { display: block; font-size: 34rpx; font-weight: bold; color: #fff; }
+.btn-hint { display: block; font-size: 22rpx; color: rgba(255,255,255,0.7); margin-top: 8rpx; }
+
+.join-section { width: 100%; }
+.join-label { display: block; font-size: 26rpx; color: #a8d8a8; margin-bottom: 16rpx; }
+.join-row { display: flex; gap: 16rpx; }
+.room-input {
+  flex: 1; height: 80rpx; background: rgba(255,255,255,0.1);
+  border: 2rpx solid rgba(168,216,168,0.3); border-radius: 12rpx;
+  padding: 0 24rpx; color: #f0e6d2; font-size: 32rpx;
+  letter-spacing: 8rpx; text-align: center;
+}
+.join-btn {
+  width: 160rpx; height: 80rpx; background: #a8d8a8; color: #0d5a2a;
+  font-size: 30rpx; font-weight: bold; border-radius: 12rpx;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.error-msg { margin-top: 24rpx; font-size: 26rpx; color: #e74c3c; text-align: center; }
+
+/* 等待状态 */
+.waiting-area { text-align: center; padding-top: 80rpx; }
+.waiting-icon { font-size: 80rpx; margin-bottom: 24rpx; }
+.waiting-text { display: block; font-size: 32rpx; color: #f0e6d2; margin-bottom: 40rpx; }
+
+.room-code { margin-bottom: 32rpx; }
+.room-code-label { display: block; font-size: 24rpx; color: #a8d8a8; margin-bottom: 12rpx; }
+.room-code-num {
+  display: block; font-size: 64rpx; font-weight: bold; color: #e8c840;
+  letter-spacing: 16rpx;
+}
+
+.waiting-hint { display: block; font-size: 24rpx; color: #a8d8a8; margin-bottom: 32rpx; }
+
+.share-btn {
+  width: 400rpx !important; padding: 20rpx 0 !important;
+  background: #e8c840 !important; color: #2c1810 !important;
+  font-size: 30rpx !important; font-weight: bold !important;
+  border-radius: 40rpx !important; margin-bottom: 24rpx !important;
+  line-height: normal !important;
+}
+.share-btn::after { border: none; }
+
+.cancel-btn { font-size: 28rpx; color: #a8d8a8; padding: 16rpx; }
+
+/* 倒计时 */
+.countdown-area { text-align: center; padding-top: 120rpx; }
+.countdown-label { display: block; font-size: 32rpx; color: #a8d8a8; margin-bottom: 40rpx; }
+.countdown-num { display: block; font-size: 128rpx; font-weight: bold; color: #e8c840; margin-bottom: 24rpx; }
+.countdown-hint { display: block; font-size: 28rpx; color: #f0e6d2; }
+
+/* 加载 */
+.loading-mask {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center;
+  z-index: 100;
+}
+.loading-spinner {
+  width: 60rpx; height: 60rpx; border: 6rpx solid rgba(255,255,255,0.3);
+  border-top-color: #fff; border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }

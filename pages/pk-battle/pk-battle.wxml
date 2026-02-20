@@ -1,0 +1,135 @@
+<view class="container">
+  <!-- 进度条区域 -->
+  <view class="progress-area">
+    <view class="player-row me">
+      <text class="player-label">我</text>
+      <view class="progress-bar-wrap">
+        <view class="progress-bar" style="width: {{myProgress}}%"></view>
+      </view>
+      <text class="player-score">{{myScore}}分</text>
+    </view>
+    <view class="player-row opponent">
+      <text class="player-label">对手</text>
+      <view class="progress-bar-wrap">
+        <view class="progress-bar op-bar" style="width: {{opponentProgress}}%"></view>
+      </view>
+      <text class="player-score">{{opponentScore}}分</text>
+    </view>
+    <view class="offline-warn" wx:if="{{opponentOffline}}">对手可能已离线</view>
+  </view>
+
+  <!-- 对战结果 -->
+  <block wx:if="{{battleFinished}}">
+    <view class="final-result {{resultClass}}">
+      <text class="final-text">{{resultText}}</text>
+      <view class="final-scores">
+        <text class="final-score-item">我：{{myScore}} / {{totalQuestions}}</text>
+        <text class="final-score-item">对手：{{opponentScore}} / {{totalQuestions}}</text>
+      </view>
+      <view class="final-actions">
+        <view class="back-btn" bindtap="goBack">返回首页</view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 答题区域 -->
+  <block wx:if="{{!battleFinished}}">
+    <view class="q-counter">第 {{myCurrent + 1}} / {{totalQuestions}} 题</view>
+
+    <!-- 何切题 -->
+    <block wx:if="{{questionType === 'practice'}}">
+      <view class="q-type-tag practice-tag">何切</view>
+      <view class="prompt" wx:if="{{!confirmed}}">选最优弃牌</view>
+      <view class="hand">
+        <tile wx:for="{{tiles}}" wx:key="index"
+              tileId="{{item}}"
+              selected="{{selectedTile === item && !confirmed}}"
+              showBest="{{confirmed && item === bestTile}}"
+              disabled="{{confirmed}}"
+              bind:select="onTileSelect" />
+      </view>
+    </block>
+
+    <!-- 河切安全判断题 -->
+    <block wx:if="{{questionType === 'safety'}}">
+      <view class="q-type-tag safety-tag">安全判断</view>
+      <view class="rivers-area">
+        <view class="river-section" wx:for="{{rivers}}" wx:key="index" wx:if="{{item.length > 0}}">
+          <view class="river-header">
+            <text class="river-label">{{riverLabels[index]}}</text>
+            <text class="feed-warn" wx:if="{{myFeeds[index] >= 2}}">已喂{{myFeeds[index]}}摊</text>
+            <text class="feed-info" wx:elif="{{myFeeds[index] === 1}}">已喂1摊</text>
+          </view>
+          <view class="river-tiles">
+            <tile wx:for="{{item}}" wx:key="idx" wx:for-item="tid"
+                  tileId="{{tid}}" small="{{true}}" disabled="{{true}}" />
+          </view>
+          <view class="melds" wx:if="{{openMelds[index].length > 0}}">
+            <view class="meld" wx:for="{{openMelds[index]}}" wx:key="mi" wx:for-item="meld">
+              <text class="meld-type">{{meld.type === 'pon' ? '碰' : '吃'}}</text>
+              <tile wx:for="{{meld.tiles}}" wx:key="ti" wx:for-item="mt"
+                    tileId="{{mt}}" small="{{true}}" disabled="{{true}}" />
+            </view>
+          </view>
+        </view>
+      </view>
+      <block wx:if="{{!confirmed}}">
+        <view class="safety-question">
+          <text class="safety-prompt">这张牌安全吗？</text>
+          <view class="target-tile-wrap">
+            <tile tileId="{{targetTile}}" disabled="{{true}}" />
+          </view>
+          <view class="safety-choices">
+            <view class="safety-btn safe" data-level="0" bindtap="onSafetyChoice">安全</view>
+            <view class="safety-btn warn" data-level="1" bindtap="onSafetyChoice">注意</view>
+            <view class="safety-btn danger" data-level="2" bindtap="onSafetyChoice">危险</view>
+          </view>
+        </view>
+      </block>
+    </block>
+
+    <!-- 河切弃牌题 -->
+    <block wx:if="{{questionType === 'discard'}}">
+      <view class="q-type-tag discard-tag">攻守弃牌</view>
+      <view class="rivers-area">
+        <view class="river-section" wx:for="{{rivers}}" wx:key="index" wx:if="{{item.length > 0}}">
+          <view class="river-header">
+            <text class="river-label">{{riverLabels[index]}}</text>
+            <text class="feed-warn" wx:if="{{myFeeds[index] >= 2}}">已喂{{myFeeds[index]}}摊</text>
+            <text class="feed-info" wx:elif="{{myFeeds[index] === 1}}">已喂1摊</text>
+          </view>
+          <view class="river-tiles">
+            <tile wx:for="{{item}}" wx:key="idx" wx:for-item="tid"
+                  tileId="{{tid}}" small="{{true}}" disabled="{{true}}" />
+          </view>
+          <view class="melds" wx:if="{{openMelds[index].length > 0}}">
+            <view class="meld" wx:for="{{openMelds[index]}}" wx:key="mi" wx:for-item="meld">
+              <text class="meld-type">{{meld.type === 'pon' ? '碰' : '吃'}}</text>
+              <tile wx:for="{{meld.tiles}}" wx:key="ti" wx:for-item="mt"
+                    tileId="{{mt}}" small="{{true}}" disabled="{{true}}" />
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="prompt" wx:if="{{!confirmed}}">选一张打出</view>
+      <view class="hand">
+        <tile wx:for="{{myHand}}" wx:key="index"
+              tileId="{{item}}"
+              selected="{{selectedTile === item && !confirmed}}"
+              showBest="{{confirmed && item === bestTile}}"
+              disabled="{{confirmed}}"
+              bind:select="onTileSelect" />
+      </view>
+    </block>
+
+    <!-- 快速结果提示 -->
+    <view class="quick-result {{isCorrect ? 'correct' : 'wrong'}}" wx:if="{{confirmed}}">
+      <text>{{isCorrect ? '✓' : '✗'}}</text>
+    </view>
+
+    <!-- 安全题正确答案 -->
+    <view class="correct-answer" wx:if="{{confirmed && questionType === 'safety'}}">
+      <text>正确：{{correctLabel}}</text>
+    </view>
+  </block>
+</view>

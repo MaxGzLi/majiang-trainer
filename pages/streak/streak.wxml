@@ -1,0 +1,212 @@
+<view class="container">
+  <!-- 顶部状态栏 -->
+  <view class="status-bar">
+    <view class="streak-display">
+      <text class="streak-icon">🔥</text>
+      <text class="streak-num">{{streak}}</text>
+    </view>
+    <view class="revives-display">
+      <text wx:for="{{revivesLeft}}" wx:key="index" class="heart-icon">❤️</text>
+      <text wx:for="{{revivesUsed}}" wx:key="index" class="heart-icon used">🖤</text>
+    </view>
+  </view>
+
+  <!-- 游戏结束 -->
+  <block wx:if="{{gameOver}}">
+    <view class="game-over">
+      <text class="go-title">挑战结束！</text>
+      <view class="go-score">
+        <text class="go-streak">连对 {{streak}} 题</text>
+        <text class="go-best">历史最佳：{{bestStreak}} 题</text>
+      </view>
+      <view class="go-actions">
+        <view class="restart-btn" bindtap="restartGame">再来一局</view>
+        <view class="back-btn" bindtap="goBack">返回首页</view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 答题区域 -->
+  <block wx:if="{{!gameOver}}">
+    <!-- 何切题 -->
+    <block wx:if="{{questionType === 'practice'}}">
+      <view class="q-type-tag practice-tag">何切</view>
+      <view class="prompt" wx:if="{{!confirmed}}">选最优弃牌（点两次确认）</view>
+      <view class="hand">
+        <tile wx:for="{{tiles}}" wx:key="index"
+              tileId="{{item}}"
+              selected="{{selectedTile === item && !confirmed}}"
+              showBest="{{confirmed && item === bestTile}}"
+              disabled="{{confirmed}}"
+              bind:select="onTileSelect" />
+      </view>
+    </block>
+
+    <!-- 河切安全判断题 -->
+    <block wx:if="{{questionType === 'safety'}}">
+      <view class="q-type-tag safety-tag">河切·安全判断</view>
+      <view class="rivers-area">
+        <view class="river-section" wx:for="{{rivers}}" wx:key="index" wx:if="{{item.length > 0}}">
+          <view class="river-header">
+            <text class="river-label">{{riverLabels[index]}}</text>
+            <text class="feed-warn" wx:if="{{myFeeds[index] >= 2}}">已喂{{myFeeds[index]}}摊</text>
+            <text class="feed-info" wx:elif="{{myFeeds[index] === 1}}">已喂1摊</text>
+          </view>
+          <view class="river-tiles">
+            <tile wx:for="{{item}}" wx:key="idx" wx:for-item="tid"
+                  tileId="{{tid}}" small="{{true}}" disabled="{{true}}" />
+          </view>
+          <view class="melds" wx:if="{{openMelds[index].length > 0}}">
+            <view class="meld" wx:for="{{openMelds[index]}}" wx:key="mi" wx:for-item="meld">
+              <text class="meld-type">{{meld.type === 'pon' ? '碰' : '吃'}}</text>
+              <tile wx:for="{{meld.tiles}}" wx:key="ti" wx:for-item="mt"
+                    tileId="{{mt}}" small="{{true}}" disabled="{{true}}" />
+            </view>
+          </view>
+        </view>
+      </view>
+      <block wx:if="{{!confirmed}}">
+        <view class="safety-question">
+          <text class="safety-prompt">这张牌打出去安全吗？</text>
+          <view class="target-tile-wrap">
+            <tile tileId="{{targetTile}}" disabled="{{true}}" />
+          </view>
+          <view class="safety-choices">
+            <view class="safety-btn safe" data-level="0" bindtap="onSafetyChoice">安全</view>
+            <view class="safety-btn warn" data-level="1" bindtap="onSafetyChoice">注意</view>
+            <view class="safety-btn danger" data-level="2" bindtap="onSafetyChoice">危险</view>
+          </view>
+        </view>
+      </block>
+    </block>
+
+    <!-- 河切弃牌题 -->
+    <block wx:if="{{questionType === 'discard'}}">
+      <view class="q-type-tag discard-tag">河切·攻守弃牌</view>
+      <view class="rivers-area">
+        <view class="river-section" wx:for="{{rivers}}" wx:key="index" wx:if="{{item.length > 0}}">
+          <view class="river-header">
+            <text class="river-label">{{riverLabels[index]}}</text>
+            <text class="feed-warn" wx:if="{{myFeeds[index] >= 2}}">已喂{{myFeeds[index]}}摊</text>
+            <text class="feed-info" wx:elif="{{myFeeds[index] === 1}}">已喂1摊</text>
+          </view>
+          <view class="river-tiles">
+            <tile wx:for="{{item}}" wx:key="idx" wx:for-item="tid"
+                  tileId="{{tid}}" small="{{true}}" disabled="{{true}}" />
+          </view>
+          <view class="melds" wx:if="{{openMelds[index].length > 0}}">
+            <view class="meld" wx:for="{{openMelds[index]}}" wx:key="mi" wx:for-item="meld">
+              <text class="meld-type">{{meld.type === 'pon' ? '碰' : '吃'}}</text>
+              <tile wx:for="{{meld.tiles}}" wx:key="ti" wx:for-item="mt"
+                    tileId="{{mt}}" small="{{true}}" disabled="{{true}}" />
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="prompt" wx:if="{{!confirmed}}">综合牌效和安全性，选一张打出（点两次确认）</view>
+      <view class="hand">
+        <tile wx:for="{{myHand}}" wx:key="index"
+              tileId="{{item}}"
+              selected="{{selectedTile === item && !confirmed}}"
+              showBest="{{confirmed && item === bestTile}}"
+              disabled="{{confirmed}}"
+              bind:select="onTileSelect" />
+      </view>
+    </block>
+
+    <!-- 答题结果 -->
+    <block wx:if="{{confirmed}}">
+      <view class="result {{isCorrect ? 'correct' : 'wrong'}}">
+        <text class="result-text">{{isCorrect ? '✓ 正确！' : '✗ 答错了'}}</text>
+      </view>
+
+      <!-- 何切题错误对比 -->
+      <view class="comparison" wx:if="{{questionType === 'practice' && !isCorrect}}">
+        <view class="comp-row user-row">
+          <text class="comp-icon">✗</text>
+          <text>你打了 {{userTileStr}}</text>
+        </view>
+        <view class="comp-row best-row">
+          <text class="comp-icon">✓</text>
+          <text>更好的选择是打 {{bestTileStr}}</text>
+        </view>
+      </view>
+
+      <!-- 安全判断正确答案 -->
+      <view class="correct-answer" wx:if="{{questionType === 'safety'}}">
+        <text>正确答案：{{correctLabel}}</text>
+      </view>
+
+      <!-- 河切弃牌正确答案 -->
+      <view class="correct-answer" wx:if="{{questionType === 'discard' && !isCorrect}}">
+        <text>更好的选择：打 {{bestTileStr}}</text>
+      </view>
+
+      <!-- 解析 -->
+      <view class="explanation">
+        <view class="exp-header"><text class="exp-label">为什么？</text></view>
+        <text class="exp-text">{{explanation}}</text>
+      </view>
+
+      <!-- 何切题局面 -->
+      <view class="situation" wx:if="{{questionType === 'practice'}}">
+        <text class="sit-text">打{{bestTileStr}}之后：{{bestShantenText}}，{{bestAcceptText}}</text>
+      </view>
+
+      <!-- 何切对比列表 -->
+      <view class="analysis-list" wx:if="{{questionType === 'practice' && analysis.length > 0}}">
+        <view class="analysis-header">
+          <text class="analysis-title">各选择对比</text>
+          <text class="analysis-hint">条越长 = 摸到有用牌的机会越大</text>
+        </view>
+        <view class="analysis-item {{item.tile === bestTile ? 'best-item' : ''}} {{item.tile === userTile && !isCorrect ? 'user-item' : ''}}"
+              wx:for="{{analysis}}" wx:key="tile">
+          <view class="a-left">
+            <text class="a-tile">打{{item.tileStr}}</text>
+            <text class="a-steps">{{item.shantenText}}</text>
+          </view>
+          <view class="a-bar-wrap">
+            <view class="a-bar" style="width: {{item.barWidth}}%"></view>
+          </view>
+          <text class="a-count">{{item.totalAcceptCount}}张</text>
+        </view>
+      </view>
+
+      <!-- 河切弃牌对比列表 -->
+      <view class="analysis-list" wx:if="{{questionType === 'discard' && analysis.length > 0}}">
+        <view class="analysis-header">
+          <text class="analysis-title">各选择对比</text>
+        </view>
+        <view class="analysis-item {{item.tile === bestTile ? 'best-item' : ''}}"
+              wx:for="{{analysis}}" wx:key="tile">
+          <view class="a-left">
+            <text class="a-tile">打{{item.tileStr}}</text>
+            <text class="a-steps">{{item.shantenText}}</text>
+          </view>
+          <view class="a-bar-wrap">
+            <view class="a-bar" style="width: {{item.barWidth}}%"></view>
+          </view>
+          <text class="a-count">{{item.totalAcceptCount}}张</text>
+          <text class="a-danger {{item.dangerClass}}">{{item.dangerLabel}}</text>
+        </view>
+      </view>
+
+      <view class="actions">
+        <view class="next-btn" bindtap="nextQuestion">下一题</view>
+      </view>
+    </block>
+  </block>
+
+  <!-- 复活弹窗 -->
+  <view class="revive-mask" wx:if="{{showRevivePopup}}">
+    <view class="revive-popup">
+      <text class="revive-title">答错了！</text>
+      <text class="revive-streak">当前连对：{{streak}} 题</text>
+      <text class="revive-hint">{{adEnabled ? '看广告复活，继续挑战' : '免费复活，继续挑战'}}（剩余{{revivesLeft}}次）</text>
+      <view class="revive-actions">
+        <view class="revive-btn" bindtap="onRevive">{{adEnabled ? '看广告复活' : '使用复活'}}</view>
+        <view class="giveup-btn" bindtap="onGiveUp">结束挑战</view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -11,23 +11,24 @@ const DIFF_CONFIG = {
 }
 
 // 生成河切练习场景
-function dealHeqieScenario(difficulty, maxAttempts = 200) {
+function dealHeqieScenario(difficulty, maxAttempts = 200, rng) {
   const config = DIFF_CONFIG[difficulty]
   if (!config) return null
 
-  const questionType = config.types[Math.floor(Math.random() * config.types.length)]
-  const turnNumber = config.turnRange[0] + Math.floor(Math.random() * (config.turnRange[1] - config.turnRange[0] + 1))
+  const rand = rng || Math.random
+  const questionType = config.types[Math.floor(rand() * config.types.length)]
+  const turnNumber = config.turnRange[0] + Math.floor(rand() * (config.turnRange[1] - config.turnRange[0] + 1))
 
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
-    const scenario = _buildScenario(config, questionType, turnNumber)
+    const scenario = _buildScenario(config, questionType, turnNumber, rand)
     if (scenario) return scenario
   }
 
   return null
 }
 
-function _buildScenario(config, questionType, turnNumber) {
-  const wall = shuffle(createWall())
+function _buildScenario(config, questionType, turnNumber, rand) {
+  const wall = shuffle(createWall(), rand)
   let pos = 0
 
   // 我的手牌: 14张
@@ -50,11 +51,11 @@ function _buildScenario(config, questionType, turnNumber) {
     pos += riverSize
 
     const allTiles = [...opp.hand, ...drawnTiles]
-    const sorted = _sortByDiscardPriority(allTiles)
+    const sorted = _sortByDiscardPriority(allTiles, rand)
     opp.river = sorted.slice(0, Math.min(turnNumber, sorted.length))
 
     // 随机明牌
-    if (Math.random() < 0.4 && opp.hand.length > 3) {
+    if (rand() < 0.4 && opp.hand.length > 3) {
       const meld = _tryMakeMeld(opp.hand)
       if (meld) opp.melds.push(meld)
     }
@@ -62,7 +63,7 @@ function _buildScenario(config, questionType, turnNumber) {
 
   const rivers = opponents.map(o => o.river)
   const openMelds = opponents.map(o => o.melds)
-  const myFeeds = opponents.map(() => Math.random() < 0.15 ? 2 : (Math.random() < 0.3 ? 1 : 0))
+  const myFeeds = opponents.map(() => rand() < 0.15 ? 2 : (rand() < 0.3 ? 1 : 0))
 
   if (!_validateTileCounts(myHand, rivers, openMelds)) return null
 
@@ -73,22 +74,22 @@ function _buildScenario(config, questionType, turnNumber) {
   }
 }
 
-function _sortByDiscardPriority(tiles) {
+function _sortByDiscardPriority(tiles, rand) {
   return [...tiles].sort((a, b) => {
-    const pa = _discardPriority(a)
-    const pb = _discardPriority(b)
+    const pa = _discardPriority(a, rand)
+    const pb = _discardPriority(b, rand)
     if (pa !== pb) return pb - pa
-    return Math.random() - 0.5
+    return rand() - 0.5
   })
 }
 
-function _discardPriority(tileId) {
+function _discardPriority(tileId, rand) {
   if (tileId === JOKER_ID) return 0
-  if (!isNumeric(tileId)) return 90 + Math.random() * 10
+  if (!isNumeric(tileId)) return 90 + rand() * 10
   const num = getNumber(tileId)
-  if (num === 1 || num === 9) return 70 + Math.random() * 10
-  if (num === 2 || num === 8) return 50 + Math.random() * 10
-  return 20 + Math.random() * 10
+  if (num === 1 || num === 9) return 70 + rand() * 10
+  if (num === 2 || num === 8) return 50 + rand() * 10
+  return 20 + rand() * 10
 }
 
 function _tryMakeMeld(hand) {

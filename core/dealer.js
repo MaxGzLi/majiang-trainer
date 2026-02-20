@@ -19,11 +19,11 @@ function hasTrainingValue(analysis, minGap) {
   return false
 }
 
-function dealHand(difficulty, maxAttempts = 500) {
+function dealHand(difficulty, maxAttempts = 500, rng) {
   const minGap = difficulty === DIFFICULTY.EASY ? 4 : 2
 
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
-    const wall = shuffle(createWall())
+    const wall = shuffle(createWall(), rng)
     const hand = wall.slice(0, 14)
     const handArr = tilesToHandArray(hand)
     const jokerCount = handArr[JOKER_ID]
@@ -51,7 +51,7 @@ function dealHand(difficulty, maxAttempts = 500) {
 
   // 降低要求再试：gap 降到最低1张差距
   for (let attempt = 0; attempt < 300; attempt++) {
-    const wall = shuffle(createWall())
+    const wall = shuffle(createWall(), rng)
     const hand = wall.slice(0, 14)
     const handArr = tilesToHandArray(hand)
     const jokerCount = handArr[JOKER_ID]
